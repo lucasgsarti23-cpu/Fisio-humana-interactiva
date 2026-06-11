@@ -4,112 +4,123 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fisiología Humana Interactiva</title>
+<title>Laboratorio Cardiovascular</title>
 
-<!-- MODELO 3D -->
 <script type="module"
 src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js">
 </script>
 
 <style>
 
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
-
 body{
-    font-family: Arial, sans-serif;
-    background:#f4f7fa;
+font-family: Arial;
+background:#f4f7fa;
+margin:0;
 }
 
 header{
-    background:#0d3b66;
-    color:white;
-    text-align:center;
-    padding:30px;
-}
-
-nav{
-    background:#145da0;
-    padding:15px;
-    display:flex;
-    justify-content:center;
-    gap:15px;
-    flex-wrap:wrap;
-}
-
-nav button{
-    padding:10px 15px;
-    border:none;
-    border-radius:5px;
-    background:white;
-    cursor:pointer;
-    font-weight:bold;
-}
-
-nav button:hover{
-    background:#dbe9f4;
+background:#0d3b66;
+color:white;
+padding:20px;
+text-align:center;
 }
 
 main{
-    max-width:1200px;
-    margin:auto;
-    padding:30px;
-}
-
-.modulo{
-    display:none;
-}
-
-.modulo.activo{
-    display:block;
+max-width:1000px;
+margin:auto;
+padding:20px;
 }
 
 .card{
-    background:white;
-    padding:20px;
-    margin:15px 0;
-    border-radius:10px;
-    box-shadow:0 0 8px rgba(0,0,0,0.1);
+background:white;
+padding:20px;
+margin:15px 0;
+border-radius:10px;
+box-shadow:0 0 8px rgba(0,0,0,0.1);
 }
 
 .simulador{
-    margin-top:20px;
-    padding:20px;
-    background:#eef5fb;
-    border-radius:10px;
+background:#eef5fb;
+padding:15px;
+border-radius:10px;
+margin-top:10px;
 }
 
 input[type="range"]{
-    width:100%;
+width:100%;
 }
 
 button{
-    padding:10px;
-    margin:5px;
-    cursor:pointer;
+padding:10px;
+margin-top:10px;
+cursor:pointer;
 }
 
 .resultado{
-    margin-top:15px;
-    font-size:18px;
-    font-weight:bold;
+font-weight:bold;
+margin-top:10px;
 }
 
+/* 🔥 CONTENEDOR CORAZÓN + ECG */
+.laboratorio{
+display:flex;
+gap:20px;
+flex-wrap:wrap;
+align-items:center;
+}
+
+/* MODELO 3D */
 model-viewer{
-    width:100%;
-    height:450px;
-    border-radius:10px;
+width:500px;
+height:450px;
+transition: transform 0.2s ease;
 }
 
-footer{
-    text-align:center;
-    padding:20px;
-    background:#0d3b66;
-    color:white;
-    margin-top:40px;
+/* ECG */
+.ecg{
+flex:1;
+min-width:250px;
+background:black;
+height:120px;
+position:relative;
+overflow:hidden;
+border-radius:10px;
+}
+
+.linea{
+position:absolute;
+width:200%;
+height:2px;
+background:lime;
+top:60px;
+animation:ecgMove 1s linear infinite;
+}
+
+@keyframes ecgMove{
+from{ transform:translateX(0); }
+to{ transform:translateX(-50%); }
+}
+
+/* pico QRS */
+.pico{
+position:absolute;
+width:2px;
+height:60px;
+background:lime;
+top:30px;
+left:50%;
+animation:pulse 1s infinite;
+}
+
+@keyframes pulse{
+0%,90%{opacity:0;}
+95%{opacity:1; height:80px;}
+100%{opacity:0;}
+}
+
+.estado{
+margin-top:10px;
+font-weight:bold;
 }
 
 </style>
@@ -118,43 +129,34 @@ footer{
 <body>
 
 <header>
-    <h1>Fisiología Humana Interactiva</h1>
-    <p>Laboratorio virtual cardiovascular</p>
+<h1>Laboratorio Cardiovascular Interactivo</h1>
 </header>
-
-<nav>
-    <button onclick="mostrarModulo('inicio')">Inicio</button>
-    <button onclick="mostrarModulo('cardio')">Cardiovascular</button>
-</nav>
 
 <main>
 
-<!-- INICIO -->
-<section id="inicio" class="modulo activo">
-
-<div class="card">
-<h2>Bienvenido</h2>
-<p>Explora la fisiología humana mediante simulación interactiva.</p>
-</div>
-
-</section>
-
-<!-- CARDIO -->
-<section id="cardio" class="modulo">
-
 <div class="card">
 
-<h2>Laboratorio Virtual Cardiovascular</h2>
+<h2>Corazón 3D + ECG en tiempo real</h2>
 
-<h3>Modelo 3D del corazón</h3>
+<div class="laboratorio">
 
+<!-- 🫀 CORAZÓN -->
 <model-viewer
-id="corazon3d"
+id="corazon"
 src="modelos/corazonhum.glb"
 auto-rotate
-camera-controls
-shadow-intensity="1">
+camera-controls>
 </model-viewer>
+
+<!-- 📈 ECG -->
+<div class="ecg">
+
+<div class="linea"></div>
+<div class="pico" id="picoQRS"></div>
+
+</div>
+
+</div>
 
 </div>
 
@@ -164,90 +166,90 @@ shadow-intensity="1">
 
 <div class="simulador">
 
-<label>
-Frecuencia Cardíaca: <span id="fcValor">70</span> lpm
-</label>
+<label>Frecuencia Cardíaca: <span id="fcVal">70</span></label>
+<input type="range" id="fc" min="40" max="200" value="70" oninput="actualizar()">
 
-<input type="range"
-id="fc"
-min="40"
-max="200"
-value="70"
-oninput="actualizarLab()">
-
-<label>
-Volumen Sistólico: <span id="vsValor">70</span> ml
-</label>
-
-<input type="range"
-id="vs"
-min="30"
-max="150"
-value="70"
-oninput="actualizarLab()">
+<label>Volumen Sistólico: <span id="vsVal">70</span></label>
+<input type="range" id="vs" min="30" max="150" value="70" oninput="actualizar()">
 
 <div class="resultado">
 Gasto Cardíaco: <span id="gc">4.9</span> L/min
 </div>
 
-<div id="estado" style="margin-top:10px; font-weight:bold;"></div>
+<div id="estado"></div>
+
+<button onclick="reset()">🔄 Reset</button>
 
 </div>
 
 </div>
-
-</section>
 
 </main>
 
-<footer>
-Proyecto Fisiología Humana Interactiva
-</footer>
-
 <script>
 
-// navegación
-function mostrarModulo(id){
+let latido;
 
-document.querySelectorAll(".modulo")
-.forEach(m => m.classList.remove("activo"));
-
-document.getElementById(id)
-.classList.add("activo");
-}
-
-// simulación avanzada + 3D
-function actualizarLab(){
+function actualizar(){
 
 let fc = Number(document.getElementById("fc").value);
 let vs = Number(document.getElementById("vs").value);
 
-document.getElementById("fcValor").innerText = fc;
-document.getElementById("vsValor").innerText = vs;
+document.getElementById("fcVal").innerText = fc;
+document.getElementById("vsVal").innerText = vs;
 
 let gc = (fc * vs) / 1000;
 document.getElementById("gc").innerText = gc.toFixed(1);
 
-// estado fisiológico
 let estado = "";
+let modelo = document.getElementById("corazon");
 
-if (fc < 80){
-estado = "🟢 Reposo fisiológico";
-document.getElementById("corazon3d").setAttribute("auto-rotate-speed", "1");
+let intensidad = 1 + (vs / 300);
+let velocidad = 60000 / fc;
+
+// estado fisiológico
+if(fc < 80){
+estado = "🟢 Reposo";
 }
-
-else if (fc < 140){
+else if(fc < 140){
 estado = "🟡 Ejercicio moderado";
-document.getElementById("corazon3d").setAttribute("auto-rotate-speed", "3");
 }
-
 else{
 estado = "🔴 Alta intensidad";
-document.getElementById("corazon3d").setAttribute("auto-rotate-speed", "6");
 }
 
 document.getElementById("estado").innerText = estado;
+
+// latido visual
+clearInterval(latido);
+
+latido = setInterval(() => {
+
+modelo.style.transform = `scale(${intensidad})`;
+
+setTimeout(() => {
+modelo.style.transform = "scale(1)";
+}, velocidad/2);
+
+}, velocidad);
+
+// ECG sincronizado con FC
+let pico = document.getElementById("picoQRS");
+
+pico.style.animationDuration = (60000/fc) + "ms";
+
 }
+
+function reset(){
+
+document.getElementById("fc").value = 70;
+document.getElementById("vs").value = 70;
+
+actualizar();
+
+}
+
+actualizar();
 
 </script>
 
