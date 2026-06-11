@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Laboratorio Cardiovascular</title>
+<title>Laboratorio Cardiovascular Interactivo</title>
 
 <script type="module"
 src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js">
@@ -14,15 +14,15 @@ src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js">
 
 body{
 font-family: Arial;
-background:#f4f7fa;
 margin:0;
+background:#f4f7fa;
 }
 
 header{
 background:#0d3b66;
 color:white;
-padding:20px;
 text-align:center;
+padding:20px;
 }
 
 main{
@@ -39,11 +39,23 @@ border-radius:10px;
 box-shadow:0 0 8px rgba(0,0,0,0.1);
 }
 
+.laboratorio{
+display:flex;
+gap:20px;
+flex-wrap:wrap;
+align-items:center;
+}
+
+model-viewer{
+width:480px;
+height:420px;
+transition: transform 0.2s ease;
+}
+
 .simulador{
 background:#eef5fb;
 padding:15px;
 border-radius:10px;
-margin-top:10px;
 }
 
 input[type="range"]{
@@ -61,98 +73,25 @@ font-weight:bold;
 margin-top:10px;
 }
 
-/* 🔥 CONTENEDOR CORAZÓN + ECG */
-.laboratorio{
-display:flex;
-gap:20px;
-flex-wrap:wrap;
-align-items:center;
+/* 🫀 ECG REAL */
+.ecg{
+flex:1;
+min-width:260px;
+height:120px;
+background:black;
+border-radius:10px;
+overflow:hidden;
 }
 
-/* MODELO 3D */
-model-viewer{
-width:500px;
-height:450px;
-transition: transform 0.2s ease;
-}
-
-/* ECG */
-<div class="ecg">
-
-<svg viewBox="0 0 500 120" preserveAspectRatio="none">
-
-<polyline
-id="ecgWave"
-fill="none"
-stroke="lime"
-stroke-width="2"
-points="
-0,60
-20,60
-40,60
-60,60
-80,60
-90,30
-100,90
-110,20
-120,60
-140,60
-160,60
-180,60
-200,60
-220,60
-240,60
-260,60
-280,60
-300,60
-310,30
-320,90
-330,20
-340,60
-360,60
-380,60
-400,60
-420,60
-440,60
-460,60
-480,60
-500,60
-"
-/>
-
-</svg>
-
-</div>
-
-.linea{
-position:absolute;
+.ecg svg{
 width:200%;
-height:2px;
-background:lime;
-top:60px;
-animation:ecgMove 1s linear infinite;
+height:100%;
+animation:moveECG 1s linear infinite;
 }
 
-@keyframes ecgMove{
-from{ transform:translateX(0); }
-to{ transform:translateX(-50%); }
-}
-
-/* pico QRS */
-.pico{
-position:absolute;
-width:2px;
-height:60px;
-background:lime;
-top:30px;
-left:50%;
-animation:pulse 1s infinite;
-}
-
-@keyframes pulse{
-0%,90%{opacity:0;}
-95%{opacity:1; height:80px;}
-100%{opacity:0;}
+@keyframes moveECG{
+from{transform:translateX(0);}
+to{transform:translateX(-50%);}
 }
 
 .estado{
@@ -173,11 +112,11 @@ font-weight:bold;
 
 <div class="card">
 
-<h2>Corazón 3D + ECG en tiempo real</h2>
+<h2>Corazón 3D + ECG sincronizado</h2>
 
 <div class="laboratorio">
 
-<!-- 🫀 CORAZÓN -->
+<!-- 🫀 MODELO 3D -->
 <model-viewer
 id="corazon"
 src="modelos/corazonhum.glb"
@@ -185,11 +124,27 @@ auto-rotate
 camera-controls>
 </model-viewer>
 
-<!-- 📈 ECG -->
+<!-- 📈 ECG REAL -->
 <div class="ecg">
 
-<div class="linea"></div>
-<div class="pico" id="picoQRS"></div>
+<svg viewBox="0 0 500 120" preserveAspectRatio="none">
+
+<polyline
+stroke="lime"
+stroke-width="2"
+fill="none"
+points="
+0,60 20,60 40,60 60,60 80,60
+90,30 100,90 110,20 120,60
+140,60 160,60 180,60 200,60
+220,60 240,60 260,60 280,60
+300,60 310,30 320,90 330,20 340,60
+360,60 380,60 400,60 420,60
+440,60 460,60 480,60 500,60
+"
+/>
+
+</svg>
 
 </div>
 
@@ -227,6 +182,7 @@ Gasto Cardíaco: <span id="gc">4.9</span> L/min
 
 let latido;
 
+// 🧠 SIMULACIÓN PRINCIPAL
 function actualizar(){
 
 let fc = Number(document.getElementById("fc").value);
@@ -238,26 +194,20 @@ document.getElementById("vsVal").innerText = vs;
 let gc = (fc * vs) / 1000;
 document.getElementById("gc").innerText = gc.toFixed(1);
 
+// estado
 let estado = "";
+if(fc < 80) estado = "🟢 Reposo";
+else if(fc < 140) estado = "🟡 Ejercicio moderado";
+else estado = "🔴 Alta intensidad";
+
+document.getElementById("estado").innerText = estado;
+
+// 🫀 LATIDO (ESCALA)
 let modelo = document.getElementById("corazon");
 
 let intensidad = 1 + (vs / 300);
 let velocidad = 60000 / fc;
 
-// estado fisiológico
-if(fc < 80){
-estado = "🟢 Reposo";
-}
-else if(fc < 140){
-estado = "🟡 Ejercicio moderado";
-}
-else{
-estado = "🔴 Alta intensidad";
-}
-
-document.getElementById("estado").innerText = estado;
-
-// latido visual
 clearInterval(latido);
 
 latido = setInterval(() => {
@@ -270,13 +220,13 @@ modelo.style.transform = "scale(1)";
 
 }, velocidad);
 
-// ECG sincronizado con FC
-let pico = document.getElementById("picoQRS");
-
-pico.style.animationDuration = (60000/fc) + "ms";
+// 📈 ECG sincronizado con FC
+document.querySelector(".ecg svg").style.animationDuration =
+(60000 / fc) + "ms";
 
 }
 
+// 🔄 RESET
 function reset(){
 
 document.getElementById("fc").value = 70;
@@ -286,6 +236,7 @@ actualizar();
 
 }
 
+// inicial
 actualizar();
 
 </script>
