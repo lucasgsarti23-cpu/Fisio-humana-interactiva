@@ -77,15 +77,52 @@ transition: transform 0.2s ease;
 }
 
 /* ECG */
-.ecg{
-flex:1;
-min-width:250px;
-background:black;
-height:120px;
-position:relative;
-overflow:hidden;
-border-radius:10px;
-}
+<div class="ecg">
+
+<svg viewBox="0 0 500 120" preserveAspectRatio="none">
+
+<polyline
+id="ecgWave"
+fill="none"
+stroke="lime"
+stroke-width="2"
+points="
+0,60
+20,60
+40,60
+60,60
+80,60
+90,30
+100,90
+110,20
+120,60
+140,60
+160,60
+180,60
+200,60
+220,60
+240,60
+260,60
+280,60
+300,60
+310,30
+320,90
+330,20
+340,60
+360,60
+380,60
+400,60
+420,60
+440,60
+460,60
+480,60
+500,60
+"
+/>
+
+</svg>
+
+</div>
 
 .linea{
 position:absolute;
