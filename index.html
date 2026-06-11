@@ -6,6 +6,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Plataforma de Fisiología Cardiovascular</title>
 
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
 <script type="module"
 src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
 
@@ -13,192 +15,202 @@ src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
 
 body{
 margin:0;
-font-family: Arial;
-background: radial-gradient(circle at top, #0a0a0a, #000);
-color:#eaeaea;
+font-family: "Inter", sans-serif;
+background:#0b0c0f;
+color:#e6e6e6;
 }
 
-/* HEADER */
-header{
-padding:15px;
-text-align:center;
-background:linear-gradient(90deg,#1a0000,#000);
-color:#ff3b3b;
-border-bottom:1px solid #ff2b2b33;
-}
+/* =========================
+   TOP DASHBOARD (NAV)
+========================= */
 
-/* SIDEBAR */
-.sidebar{
+.topbar{
 position:fixed;
-left:0;
 top:0;
-height:100%;
-width:70px;
-background:#050505;
-border-right:1px solid #ff2b2b22;
+left:0;
+width:100%;
+height:60px;
+background:#12141a;
+border-bottom:1px solid #2a2d36;
 display:flex;
-flex-direction:column;
-padding-top:20px;
-transition:0.3s;
+align-items:center;
+justify-content:space-between;
+padding:0 20px;
 z-index:1000;
 }
 
-.sidebar:hover{ width:230px; }
+.title{
+font-weight:600;
+color:#dcdcdc;
+letter-spacing:0.5px;
+}
 
-.nav{
-padding:12px;
-color:#aaa;
+.menu{
+display:flex;
+gap:15px;
+}
+
+.menu button{
+background:none;
+border:none;
+color:#a8a8a8;
 cursor:pointer;
+font-size:14px;
+padding:8px 10px;
+border-radius:6px;
+transition:0.2s;
 }
 
-.nav:hover{
-background:#1a0000;
-color:#ff2b2b;
-border-radius:8px;
+.menu button:hover{
+background:#1d2028;
+color:#fff;
 }
 
-/* MAIN */
+/* ACTIVE TAB */
+.menu button.active{
+background:#2a2f3a;
+color:#fff;
+}
+
+/* =========================
+   MAIN LAYOUT
+========================= */
+
 main{
-margin-left:85px;
-padding:20px;
+padding:90px 20px 40px;
+max-width:1100px;
+margin:auto;
 }
 
-/* CARDS */
+/* SECTIONS (PAGES) */
+.section{
+display:none;
+animation:fade 0.3s ease-in-out;
+}
+
+.section.active{
+display:block;
+}
+
+@keyframes fade{
+from{opacity:0; transform:translateY(5px);}
+to{opacity:1; transform:translateY(0);}
+}
+
+/* CARD */
 .card{
-background:rgba(15,15,15,0.92);
-border:1px solid #ff2b2b22;
+background:#151821;
+border:1px solid #2a2d36;
 border-radius:12px;
-padding:20px;
-margin:20px 0;
-box-shadow:0 0 30px rgba(255,0,0,0.08);
-
-/* FIX CLAVE DEL ERROR */
-overflow:hidden;
-word-wrap:break-word;
+padding:18px;
+margin:15px 0;
 }
 
-/* GRID FIX */
+/* TEXT */
+h2,h3{
+color:#eaeaea;
+font-weight:600;
+}
+
+p{
+color:#b8b8b8;
+line-height:1.5;
+}
+
+/* GRID */
 .grid{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-gap:10px;
+gap:12px;
 }
 
-/* BOX */
 .box{
-background:#0c0c0c;
+background:#10131a;
+border:1px solid #2a2d36;
 padding:12px;
 border-radius:10px;
-border:1px solid #ff2b2b22;
-min-width:0;
-overflow:hidden;
 }
 
-/* TITLES */
-h2,h3{ color:#ff3b3b; }
+/* INPUT */
+input[type="range"]{
+width:100%;
+accent-color:#8b8b8b;
+}
 
 /* MODEL */
 model-viewer{
-width:300px;
-height:260px;
+width:280px;
+height:250px;
 border-radius:10px;
-border:1px solid #ff2b2b33;
+border:1px solid #2a2d36;
+}
+
+/* BUTTON */
+button{
+padding:8px 12px;
+background:#1a1d25;
+color:#e6e6e6;
+border:1px solid #2a2d36;
+border-radius:8px;
+cursor:pointer;
+}
+
+button:hover{
+background:#2a2f3a;
+}
+
+/* METRICS */
+.metric{
+color:#ffffff;
+font-weight:600;
 }
 
 /* ECG */
 canvas{
 width:100%;
 height:160px;
-background:#000;
+background:#0a0b0e;
 border-radius:10px;
-border:1px solid #ff2b2b33;
+border:1px solid #2a2d36;
 }
 
-/* INPUT */
-input[type="range"]{
-width:100%;
-accent-color:red;
+.small{
+color:#9aa0a6;
+font-size:13px;
 }
-
-/* BUTTON */
-button{
-padding:10px;
-background:#1a0000;
-color:white;
-border:1px solid #ff2b2b55;
-border-radius:8px;
-cursor:pointer;
-}
-
-button:hover{
-background:red;
-color:black;
-}
-
-/* LINKS NAV INSIDE DASH */
-.subnav{
-display:flex;
-flex-wrap:wrap;
-gap:10px;
-margin-bottom:10px;
-}
-
-.subnav button{
-font-size:12px;
-padding:6px 10px;
-}
-
-section{
-scroll-margin-top:20px;
-}
-
-.small{ color:#aaa; font-size:14px; }
 
 </style>
 </head>
 
 <body>
 
-<header>
-PLATAFORMA UNIVERSITARIA DE FISIOLOGÍA CARDIOVASCULAR
-</header>
+<!-- TOP BAR -->
+<div class="topbar">
+<div class="title">Plataforma Universitaria de Fisiología Cardiovascular</div>
 
-<div class="sidebar">
-<div class="nav" onclick="go('dashboard')">🏠 Dashboard</div>
-<div class="nav" onclick="go('anatomia')">🫀 Anatomía</div>
-<div class="nav" onclick="go('histologia')">🔬 Histología</div>
-<div class="nav" onclick="go('inervacion')">🧠 Inervación</div>
-<div class="nav" onclick="go('circulacion')">🩸 Circulación</div>
-<div class="nav" onclick="go('quiz')">📋 Cuestionario</div>
+<div class="menu">
+<button class="active" onclick="show('dashboard', this)">Dashboard</button>
+<button onclick="show('hemo', this)">Hemodinámica</button>
+<button onclick="show('ecg', this)">ECG</button>
+<button onclick="show('modelo', this)">Corazón</button>
+<button onclick="show('anatomia', this)">Anatomía</button>
+<button onclick="show('quiz', this)">Cuestionario</button>
+</div>
 </div>
 
 <main>
 
 <!-- DASHBOARD -->
-<section id="dashboard" class="card">
+<section id="dashboard" class="section active">
 
+<div class="card">
 <h2>Dashboard fisiológico</h2>
 
 <div class="grid">
-
-<div class="box">
-Gasto Cardíaco<br>
-<strong id="gc">4.9</strong> L/min
-</div>
-
-<div class="box">
-PAM<br>
-<strong id="pam">93</strong> mmHg
-</div>
-
-<div class="box">
-VO₂<br>
-<strong id="vo2">250</strong> ml/min
-</div>
-
-<div class="box">
-Estado<br>
-<strong id="estado">Reposo</strong>
+<div class="box">GC<br><span class="metric" id="gc">4.9</span> L/min</div>
+<div class="box">PAM<br><span class="metric" id="pam">93</span> mmHg</div>
+<div class="box">VO₂<br><span class="metric" id="vo2">250</span> ml/min</div>
+<div class="box">Estado<br><span class="metric" id="estado">Reposo</span></div>
 </div>
 
 </div>
@@ -206,9 +218,12 @@ Estado<br>
 </section>
 
 <!-- HEMODINAMICA -->
-<section class="card">
+<section id="hemo" class="section">
 
+<div class="card">
 <h2>Control hemodinámico</h2>
+
+<p class="small">Ajuste de variables cardiovasculares</p>
 
 <label>Frecuencia Cardíaca</label>
 <input id="fc" type="range" min="40" max="200" value="70" oninput="update()">
@@ -219,16 +234,25 @@ Estado<br>
 <label>Resistencia Vascular</label>
 <input id="rvp" type="range" min="10" max="40" value="20" oninput="update()">
 
-<button onclick="reset()">Reset</button>
+</div>
 
 </section>
 
-<!-- CORAZON -->
-<section class="card">
+<!-- ECG -->
+<section id="ecg" class="section">
 
-<h2>Corazón funcional</h2>
+<div class="card">
+<h2>Electrocardiograma</h2>
+<canvas id="ecgCanvas"></canvas>
+</div>
 
-<div style="display:flex;gap:20px;flex-wrap:wrap;align-items:center">
+</section>
+
+<!-- MODELO -->
+<section id="modelo" class="section">
+
+<div class="card">
+<h2>Corazón 3D</h2>
 
 <model-viewer
 id="heart"
@@ -237,66 +261,37 @@ auto-rotate
 camera-controls>
 </model-viewer>
 
-<p class="small">Modelo adaptado a carga hemodinámica</p>
-
 </div>
 
 </section>
 
-<!-- ECG -->
-<section class="card">
-
-<h2>ECG fisiológico (P-QRS-T)</h2>
-<canvas id="ecg"></canvas>
-
-</section>
-
 <!-- ANATOMIA -->
-<section id="anatomia" class="card">
+<section id="anatomia" class="section">
+
+<div class="card">
 <h2>Anatomía del corazón</h2>
 <p>
-El corazón es un órgano muscular compuesto por cuatro cavidades: aurícula derecha, aurícula izquierda,
-ventrículo derecho y ventrículo izquierdo. Su función principal es la propulsión de sangre a través del sistema circulatorio.
+El corazón es un órgano muscular encargado de la circulación sanguínea sistémica y pulmonar.
 </p>
-</section>
+</div>
 
-<!-- HISTOLOGIA -->
-<section id="histologia" class="card">
-<h2>Histología cardíaca</h2>
-<p>
-El miocardio está formado por cardiomiocitos estriados con discos intercalares que permiten
-la sincronización eléctrica y mecánica del tejido.
-</p>
-</section>
-
-<!-- INERVACION -->
-<section id="inervacion" class="card">
-<h2>Inervación</h2>
-<p>
-El sistema nervioso autónomo regula la actividad cardíaca mediante fibras simpáticas (aumento de FC)
-y parasimpáticas (disminución de FC).
-</p>
-</section>
-
-<!-- CIRCULACION -->
-<section id="circulacion" class="card">
-<h2>Circulación coronaria</h2>
-<p>
-Las arterias coronarias derecha e izquierda irrigan el miocardio. Su perfusión ocurre principalmente en diástole.
-</p>
 </section>
 
 <!-- QUIZ -->
-<section id="quiz" class="card">
-<h2>Cuestionario (20 preguntas editables)</h2>
+<section id="quiz" class="section">
+
+<div class="card">
+<h2>Cuestionario</h2>
 
 <ol>
 <script>
 for(let i=1;i<=20;i++){
-document.write(`<li contenteditable="true">Pregunta ${i}: editar...</li>`);
+document.write(`<li contenteditable="true">Pregunta ${i}</li>`);
 }
 </script>
 </ol>
+
+</div>
 
 </section>
 
@@ -304,93 +299,87 @@ document.write(`<li contenteditable="true">Pregunta ${i}: editar...</li>`);
 
 <script>
 
-let fc = document.getElementById("fc");
-let vs = document.getElementById("vs");
-let rvp = document.getElementById("rvp");
+/* NAV SYSTEM */
+function show(id, btn){
 
-function update(){
+document.querySelectorAll(".section")
+.forEach(s=>s.classList.remove("active"));
 
-let f = +fc.value;
-let v = +vs.value;
-let r = +rvp.value;
+document.querySelectorAll(".menu button")
+.forEach(b=>b.classList.remove("active"));
 
-/* hemodinamica */
-let gc = (f*v)/1000;
-let pam = (gc*r)+60;
-let vo2 = gc*50;
-
-document.getElementById("gc").innerText = gc.toFixed(1);
-document.getElementById("pam").innerText = pam.toFixed(0);
-document.getElementById("vo2").innerText = vo2.toFixed(0);
-
-/* estado */
-document.getElementById("estado").innerText =
-f<80?"Reposo":f<140?"Ejercicio":"Alta demanda";
-
-/* corazón */
-document.getElementById("heart").style.transform =
-`scale(${1+v/400})`;
-
+document.getElementById(id).classList.add("active");
+btn.classList.add("active");
 }
 
-/* =========================
-   ECG REAL P-QRS-T
-========================= */
+/* VARIABLES */
+let fc=document.getElementById("fc");
+let vs=document.getElementById("vs");
+let rvp=document.getElementById("rvp");
 
-let canvas = document.getElementById("ecg");
-let ctx = canvas.getContext("2d");
+/* UPDATE */
+function update(){
 
-canvas.width = canvas.offsetWidth;
-canvas.height = canvas.offsetHeight;
+let f=+fc.value;
+let v=+vs.value;
+let r=+rvp.value;
 
-let t = 0;
+let gc=(f*v)/1000;
+let pam=(gc*r)+60;
+let vo2=gc*50;
+
+document.getElementById("gc").innerText=gc.toFixed(1);
+document.getElementById("pam").innerText=pam.toFixed(0);
+document.getElementById("vo2").innerText=vo2.toFixed(0);
+
+document.getElementById("estado").innerText=
+f<80?"Reposo":f<140?"Ejercicio":"Alta demanda";
+
+document.getElementById("heart").style.transform=
+`scale(${1+v/400})`;
+}
+
+/* ECG SIMPLE PERO LIMPIO */
+let canvas=document.getElementById("ecgCanvas");
+let ctx=canvas.getContext("2d");
+
+canvas.width=canvas.offsetWidth;
+canvas.height=canvas.offsetHeight;
+
+let t=0;
 
 function ecg(){
 
-ctx.fillStyle="black";
+ctx.fillStyle="#0a0b0e";
 ctx.fillRect(0,0,canvas.width,canvas.height);
 
-ctx.strokeStyle="red";
-ctx.lineWidth=2;
+ctx.strokeStyle="#ff4b4b";
 ctx.beginPath();
 
-let hr = +fc.value;
-let speed = hr/60;
+let hr=+fc.value;
+let speed=hr/60;
 
 for(let x=0;x<canvas.width;x++){
 
-let phase = (x+t)*0.02*speed;
+let phase=(x+t)*0.02*speed;
 
-/* onda P-QRS-T simplificada */
-let y =
-Math.sin(phase)*5 +
-Math.exp(-Math.pow((phase%6)-3,2))*40* // QRS spike
-(Math.sin(phase*0.5)*2);
+let p=Math.exp(-Math.pow((phase%6)-1,2))*5;
+let qrs=Math.exp(-Math.pow((phase%6)-3,2))*40;
+let tW=Math.exp(-Math.pow((phase%6)-5,2))*10;
 
-y = canvas.height/2 - y;
+let y=p+qrs+tW;
 
-ctx.lineTo(x,y);
+ctx.lineTo(x,canvas.height/2-y);
 }
 
 ctx.stroke();
 
-t+=3;
+t+=2;
 requestAnimationFrame(ecg);
-}
-
-function reset(){
-fc.value=70;
-vs.value=70;
-rvp.value=20;
-update();
 }
 
 update();
 ecg();
-
-function go(id){
-document.getElementById(id).scrollIntoView({behavior:"smooth"});
-}
 
 </script>
 
