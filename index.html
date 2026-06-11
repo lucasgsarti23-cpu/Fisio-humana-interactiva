@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Plataforma de Fisiología Cardiovascular</title>
+<title>Plataforma Cardiovascular Universitaria</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 
@@ -15,15 +15,12 @@ src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
 
 body{
 margin:0;
-font-family: "Inter", sans-serif;
+font-family:"Inter",sans-serif;
 background:#0b0c0f;
-color:#e6e6e6;
+color:#eaeaea;
 }
 
-/* =========================
-   TOP DASHBOARD (NAV)
-========================= */
-
+/* TOP BAR */
 .topbar{
 position:fixed;
 top:0;
@@ -41,100 +38,91 @@ z-index:1000;
 
 .title{
 font-weight:600;
-color:#dcdcdc;
-letter-spacing:0.5px;
-}
-
-.menu{
-display:flex;
-gap:15px;
+color:#ddd;
 }
 
 .menu button{
 background:none;
 border:none;
-color:#a8a8a8;
-cursor:pointer;
-font-size:14px;
+color:#aaa;
 padding:8px 10px;
+cursor:pointer;
 border-radius:6px;
-transition:0.2s;
 }
 
 .menu button:hover{
-background:#1d2028;
+background:#1e222b;
 color:#fff;
 }
 
-/* ACTIVE TAB */
 .menu button.active{
-background:#2a2f3a;
+background:#2d323d;
 color:#fff;
 }
 
-/* =========================
-   MAIN LAYOUT
-========================= */
-
+/* MAIN */
 main{
-padding:90px 20px 40px;
+padding:90px 20px;
 max-width:1100px;
 margin:auto;
 }
 
-/* SECTIONS (PAGES) */
-.section{
-display:none;
-animation:fade 0.3s ease-in-out;
-}
+/* SECTIONS */
+.section{ display:none; }
+.section.active{ display:block; }
 
-.section.active{
-display:block;
-}
-
-@keyframes fade{
-from{opacity:0; transform:translateY(5px);}
-to{opacity:1; transform:translateY(0);}
-}
-
-/* CARD */
+/* CARDS */
 .card{
 background:#151821;
 border:1px solid #2a2d36;
 border-radius:12px;
 padding:18px;
 margin:15px 0;
+
+/* FIX TEXT BUG */
+overflow:hidden;
+min-width:0;
+word-break:break-word;
 }
 
-/* TEXT */
-h2,h3{
-color:#eaeaea;
-font-weight:600;
-}
+h2{ color:#f1f1f1; }
 
-p{
-color:#b8b8b8;
-line-height:1.5;
-}
+p{ color:#b8b8b8; line-height:1.6; }
 
 /* GRID */
 .grid{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-gap:12px;
+gap:10px;
 }
 
 .box{
-background:#10131a;
+background:#0f1117;
 border:1px solid #2a2d36;
 padding:12px;
 border-radius:10px;
+overflow:hidden;
+min-width:0;
 }
 
-/* INPUT */
+/* INPUTS */
 input[type="range"]{
 width:100%;
-accent-color:#8b8b8b;
+accent-color:#ff4b4b;
+}
+
+/* BUTTON */
+button{
+background:#1a1d25;
+color:#fff;
+border:1px solid #2a2d36;
+padding:8px 10px;
+border-radius:8px;
+cursor:pointer;
+}
+
+button:hover{
+background:#2d323d;
 }
 
 /* MODEL */
@@ -143,26 +131,6 @@ width:280px;
 height:250px;
 border-radius:10px;
 border:1px solid #2a2d36;
-}
-
-/* BUTTON */
-button{
-padding:8px 12px;
-background:#1a1d25;
-color:#e6e6e6;
-border:1px solid #2a2d36;
-border-radius:8px;
-cursor:pointer;
-}
-
-button:hover{
-background:#2a2f3a;
-}
-
-/* METRICS */
-.metric{
-color:#ffffff;
-font-weight:600;
 }
 
 /* ECG */
@@ -174,9 +142,16 @@ border-radius:10px;
 border:1px solid #2a2d36;
 }
 
-.small{
-color:#9aa0a6;
-font-size:13px;
+/* QUIZ */
+.quiz-item{
+padding:10px;
+border-bottom:1px solid #222;
+}
+
+small{ color:#9aa0a6; }
+
+.icon{
+font-size:18px;
 }
 
 </style>
@@ -186,44 +161,49 @@ font-size:13px;
 
 <!-- TOP BAR -->
 <div class="topbar">
-<div class="title">Plataforma Universitaria de Fisiología Cardiovascular</div>
+
+<div class="title">Plataforma Cardiovascular Universitaria</div>
 
 <div class="menu">
-<button class="active" onclick="show('dashboard', this)">Dashboard</button>
-<button onclick="show('hemo', this)">Hemodinámica</button>
-<button onclick="show('ecg', this)">ECG</button>
-<button onclick="show('modelo', this)">Corazón</button>
-<button onclick="show('anatomia', this)">Anatomía</button>
-<button onclick="show('quiz', this)">Cuestionario</button>
+<button class="active" onclick="show('dash',this)">Dashboard</button>
+<button onclick="show('ecg',this)">ECG</button>
+<button onclick="show('anat',this)">Anatomía</button>
+<button onclick="show('quiz',this)">Cuestionario</button>
 </div>
+
 </div>
 
 <main>
 
-<!-- DASHBOARD -->
-<section id="dashboard" class="section active">
+<!-- DASHBOARD + HEMODINAMICA -->
+<section id="dash" class="section active">
 
 <div class="card">
-<h2>Dashboard fisiológico</h2>
+
+<h2>Dashboard hemodinámico</h2>
 
 <div class="grid">
-<div class="box">GC<br><span class="metric" id="gc">4.9</span> L/min</div>
-<div class="box">PAM<br><span class="metric" id="pam">93</span> mmHg</div>
-<div class="box">VO₂<br><span class="metric" id="vo2">250</span> ml/min</div>
-<div class="box">Estado<br><span class="metric" id="estado">Reposo</span></div>
-</div>
+
+<div class="box">GC<br><b id="gc">4.9</b> L/min</div>
+<div class="box">PAM<br><b id="pam">93</b> mmHg</div>
+<div class="box">VO₂<br><b id="vo2">250</b> ml/min</div>
+<div class="box">Estado<br><b id="estado">Reposo</b></div>
 
 </div>
 
-</section>
-
-<!-- HEMODINAMICA -->
-<section id="hemo" class="section">
+</div>
 
 <div class="card">
-<h2>Control hemodinámico</h2>
 
-<p class="small">Ajuste de variables cardiovasculares</p>
+<h2>🧪 Parámetros cardiovasculares</h2>
+
+<p>
+Los parámetros cardiovasculares representan el comportamiento funcional del sistema circulatorio.
+Incluyen la frecuencia cardíaca, volumen sistólico y resistencia vascular periférica.
+Estos determinan el gasto cardíaco y la presión arterial media, fundamentales para la perfusión tisular.
+</p>
+
+<p class="icon">🏃‍♂️ Representan la respuesta del organismo al ejercicio físico y a las demandas metabólicas.</p>
 
 <label>Frecuencia Cardíaca</label>
 <input id="fc" type="range" min="40" max="200" value="70" oninput="update()">
@@ -242,37 +222,51 @@ font-size:13px;
 <section id="ecg" class="section">
 
 <div class="card">
-<h2>Electrocardiograma</h2>
-<canvas id="ecgCanvas"></canvas>
-</div>
 
-</section>
+<h2>📈 Electrocardiograma</h2>
 
-<!-- MODELO -->
-<section id="modelo" class="section">
+<p>
+El ECG registra la actividad eléctrica del corazón.
+La onda P representa despolarización auricular,
+el complejo QRS la despolarización ventricular,
+y la onda T la repolarización ventricular.
+Alteraciones pueden indicar isquemia, arritmias o hipertrofia.
+</p>
 
-<div class="card">
-<h2>Corazón 3D</h2>
-
-<model-viewer
-id="heart"
-src="modelos/corazonhum.glb"
-auto-rotate
-camera-controls>
-</model-viewer>
+<canvas id="ecg"></canvas>
 
 </div>
 
 </section>
 
 <!-- ANATOMIA -->
-<section id="anatomia" class="section">
+<section id="anat" class="section">
 
 <div class="card">
-<h2>Anatomía del corazón</h2>
+
+<h2>🫀 Anatomía del corazón</h2>
+
 <p>
-El corazón es un órgano muscular encargado de la circulación sanguínea sistémica y pulmonar.
+El corazón posee cuatro cavidades: aurículas y ventrículos derechos e izquierdos.
+Externamente presenta ápice, base, surcos coronarios y grandes vasos.
+Internamente incluye válvulas tricúspide, mitral, pulmonar y aórtica.
 </p>
+
+<p>
+El sistema de inervación autonómica regula su actividad:
+el sistema simpático aumenta frecuencia y contractilidad,
+mientras que el parasimpático (vago) reduce la actividad cardíaca.
+</p>
+
+<div style="margin-top:15px">
+<model-viewer
+id="heart"
+src="modelos/corazonhum.glb"
+auto-rotate
+camera-controls>
+</model-viewer>
+</div>
+
 </div>
 
 </section>
@@ -281,15 +275,12 @@ El corazón es un órgano muscular encargado de la circulación sanguínea sist�
 <section id="quiz" class="section">
 
 <div class="card">
-<h2>Cuestionario</h2>
 
-<ol>
-<script>
-for(let i=1;i<=20;i++){
-document.write(`<li contenteditable="true">Pregunta ${i}</li>`);
-}
-</script>
-</ol>
+<h2>📋 Cuestionario</h2>
+
+<small>Seleccione Verdadero o Falso</small>
+
+<div id="quizContainer"></div>
 
 </div>
 
@@ -299,8 +290,8 @@ document.write(`<li contenteditable="true">Pregunta ${i}</li>`);
 
 <script>
 
-/* NAV SYSTEM */
-function show(id, btn){
+/* NAV */
+function show(id,btn){
 
 document.querySelectorAll(".section")
 .forEach(s=>s.classList.remove("active"));
@@ -310,6 +301,7 @@ document.querySelectorAll(".menu button")
 
 document.getElementById(id).classList.add("active");
 btn.classList.add("active");
+
 }
 
 /* VARIABLES */
@@ -337,10 +329,11 @@ f<80?"Reposo":f<140?"Ejercicio":"Alta demanda";
 
 document.getElementById("heart").style.transform=
 `scale(${1+v/400})`;
+
 }
 
-/* ECG SIMPLE PERO LIMPIO */
-let canvas=document.getElementById("ecgCanvas");
+/* ECG FIX REAL */
+let canvas=document.getElementById("ecg");
 let ctx=canvas.getContext("2d");
 
 canvas.width=canvas.offsetWidth;
@@ -376,8 +369,33 @@ ctx.stroke();
 
 t+=2;
 requestAnimationFrame(ecg);
+
 }
 
+/* QUIZ */
+let preguntas=[
+"El nodo SA es el marcapasos fisiológico del corazón",
+"El ventrículo izquierdo tiene mayor presión que el derecho",
+"El sistema parasimpático aumenta la frecuencia cardíaca",
+"La válvula mitral está entre aurícula izquierda y ventrículo izquierdo",
+"El QRS representa repolarización ventricular"
+];
+
+let container=document.getElementById("quizContainer");
+
+preguntas.forEach((p,i)=>{
+
+container.innerHTML+=`
+<div class="quiz-item">
+<p>${i+1}. ${p}</p>
+<label><input type="radio" name="q${i}"> Verdadero</label>
+<label><input type="radio" name="q${i}"> Falso</label>
+</div>
+`;
+
+});
+
+/* INIT */
 update();
 ecg();
 
