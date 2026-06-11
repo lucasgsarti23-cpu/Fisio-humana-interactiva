@@ -31,6 +31,7 @@ margin:auto;
 padding:20px;
 }
 
+/* CARD GENERAL */
 .card{
 background:white;
 padding:20px;
@@ -39,6 +40,7 @@ border-radius:10px;
 box-shadow:0 0 8px rgba(0,0,0,0.1);
 }
 
+/* 🧪 LABORATORIO */
 .laboratorio{
 display:flex;
 gap:20px;
@@ -46,12 +48,40 @@ flex-wrap:wrap;
 align-items:center;
 }
 
+/* 🫀 MODELO */
 model-viewer{
 width:480px;
 height:420px;
 transition: transform 0.2s ease;
 }
 
+/* 📈 ECG (FIJO Y SEPARADO) */
+.ecg-container{
+width:100%;
+margin-top:15px;
+}
+
+.ecg{
+width:100%;
+height:140px;
+background:black;
+border-radius:10px;
+overflow:hidden;
+position:relative;
+}
+
+.ecg svg{
+width:200%;
+height:100%;
+animation:moveECG 1s linear infinite;
+}
+
+@keyframes moveECG{
+from{transform:translateX(0);}
+to{transform:translateX(-50%);}
+}
+
+/* SIMULADOR */
 .simulador{
 background:#eef5fb;
 padding:15px;
@@ -73,27 +103,6 @@ font-weight:bold;
 margin-top:10px;
 }
 
-/* 🫀 ECG REAL */
-.ecg{
-flex:1;
-min-width:260px;
-height:120px;
-background:black;
-border-radius:10px;
-overflow:hidden;
-}
-
-.ecg svg{
-width:200%;
-height:100%;
-animation:moveECG 1s linear infinite;
-}
-
-@keyframes moveECG{
-from{transform:translateX(0);}
-to{transform:translateX(-50%);}
-}
-
 .estado{
 margin-top:10px;
 font-weight:bold;
@@ -110,13 +119,13 @@ font-weight:bold;
 
 <main>
 
+<!-- 🫀 MODELO -->
 <div class="card">
 
 <h2>Corazón 3D + ECG sincronizado</h2>
 
 <div class="laboratorio">
 
-<!-- 🫀 MODELO 3D -->
 <model-viewer
 id="corazon"
 src="modelos/corazonhum.glb"
@@ -124,7 +133,11 @@ auto-rotate
 camera-controls>
 </model-viewer>
 
-<!-- 📈 ECG REAL -->
+</div>
+
+<!-- 📈 ECG BIEN SEPARADO -->
+<div class="ecg-container">
+
 <div class="ecg">
 
 <svg viewBox="0 0 500 120" preserveAspectRatio="none">
@@ -152,6 +165,7 @@ points="
 
 </div>
 
+<!-- 🧪 SIMULACIÓN -->
 <div class="card">
 
 <h3>Simulación fisiológica</h3>
@@ -182,7 +196,6 @@ Gasto Cardíaco: <span id="gc">4.9</span> L/min
 
 let latido;
 
-// 🧠 SIMULACIÓN PRINCIPAL
 function actualizar(){
 
 let fc = Number(document.getElementById("fc").value);
@@ -202,7 +215,7 @@ else estado = "🔴 Alta intensidad";
 
 document.getElementById("estado").innerText = estado;
 
-// 🫀 LATIDO (ESCALA)
+// 🫀 latido
 let modelo = document.getElementById("corazon");
 
 let intensidad = 1 + (vs / 300);
@@ -220,13 +233,12 @@ modelo.style.transform = "scale(1)";
 
 }, velocidad);
 
-// 📈 ECG sincronizado con FC
+// 📈 ECG sincronizado
 document.querySelector(".ecg svg").style.animationDuration =
 (60000 / fc) + "ms";
 
 }
 
-// 🔄 RESET
 function reset(){
 
 document.getElementById("fc").value = 70;
@@ -236,7 +248,6 @@ actualizar();
 
 }
 
-// inicial
 actualizar();
 
 </script>
