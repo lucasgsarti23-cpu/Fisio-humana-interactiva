@@ -4,9 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Plataforma Cardiovascular Universitaria</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+<title>Plataforma de Fisiología Cardiovascular</title>
 
 <script type="module"
 src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
@@ -15,153 +13,202 @@ src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
 
 body{
 margin:0;
-font-family:"Inter",sans-serif;
-background:#0b0c10;
+font-family: Arial;
+background: radial-gradient(circle at top, #0a0a0a, #000);
 color:#eaeaea;
 }
 
-/* TOP BAR */
-.topbar{
+/* HEADER */
+header{
+padding:15px;
+text-align:center;
+background:linear-gradient(90deg,#1a0000,#000);
+color:#ff3b3b;
+border-bottom:1px solid #ff2b2b33;
+}
+
+/* SIDEBAR */
+.sidebar{
 position:fixed;
-top:0;
 left:0;
-width:100%;
-height:60px;
-background:#12141a;
-border-bottom:1px solid #2a2d36;
+top:0;
+height:100%;
+width:70px;
+background:#050505;
+border-right:1px solid #ff2b2b22;
 display:flex;
-align-items:center;
-justify-content:space-between;
-padding:0 20px;
+flex-direction:column;
+padding-top:20px;
+transition:0.3s;
 z-index:1000;
 }
 
-.title{ color:#ddd; font-weight:600; }
+.sidebar:hover{ width:230px; }
 
-.menu button{
-background:none;
-border:none;
+.nav{
+padding:12px;
 color:#aaa;
-padding:8px 10px;
 cursor:pointer;
-border-radius:6px;
 }
 
-.menu button:hover{ background:#1f2430; color:#fff; }
-.menu button.active{ background:#2a2f3a; color:#fff; }
+.nav:hover{
+background:#1a0000;
+color:#ff2b2b;
+border-radius:8px;
+}
 
-/* LAYOUT */
+/* MAIN */
 main{
-padding:90px 20px;
-max-width:1100px;
-margin:auto;
+margin-left:85px;
+padding:20px;
 }
-
-.section{ display:none; }
-.section.active{ display:block; }
 
 /* CARDS */
 .card{
-background:#151821;
-border:1px solid #2a2d36;
+background:rgba(15,15,15,0.92);
+border:1px solid #ff2b2b22;
 border-radius:12px;
-padding:18px;
-margin:15px 0;
+padding:20px;
+margin:20px 0;
+box-shadow:0 0 30px rgba(255,0,0,0.08);
+
+/* FIX CLAVE DEL ERROR */
 overflow:hidden;
-word-break:break-word;
+word-wrap:break-word;
 }
 
-/* GRID */
+/* GRID FIX */
 .grid{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
 gap:10px;
 }
 
+/* BOX */
 .box{
-background:#0f1117;
-border:1px solid #2a2d36;
+background:#0c0c0c;
 padding:12px;
 border-radius:10px;
+border:1px solid #ff2b2b22;
+min-width:0;
+overflow:hidden;
 }
 
-/* TEXT */
-h2{ color:#ff4b4b; }
-p{ color:#b8b8b8; line-height:1.5; }
-.small{ color:#9aa0a6; font-size:13px; }
-
-/* INPUT */
-input[type="range"]{
-width:100%;
-accent-color:#ff4b4b;
-}
+/* TITLES */
+h2,h3{ color:#ff3b3b; }
 
 /* MODEL */
 model-viewer{
 width:300px;
 height:260px;
 border-radius:10px;
-border:1px solid #2a2d36;
-}
-
-/* QUIZ */
-.quiz{
-background:#0f1117;
-border:1px solid #2a2d36;
-padding:12px;
-border-radius:10px;
-margin:10px 0;
+border:1px solid #ff2b2b33;
 }
 
 /* ECG */
 canvas{
 width:100%;
-height:170px;
-background:#0a0b0e;
+height:160px;
+background:#000;
 border-radius:10px;
-border:1px solid #2a2d36;
+border:1px solid #ff2b2b33;
 }
+
+/* INPUT */
+input[type="range"]{
+width:100%;
+accent-color:red;
+}
+
+/* BUTTON */
+button{
+padding:10px;
+background:#1a0000;
+color:white;
+border:1px solid #ff2b2b55;
+border-radius:8px;
+cursor:pointer;
+}
+
+button:hover{
+background:red;
+color:black;
+}
+
+/* LINKS NAV INSIDE DASH */
+.subnav{
+display:flex;
+flex-wrap:wrap;
+gap:10px;
+margin-bottom:10px;
+}
+
+.subnav button{
+font-size:12px;
+padding:6px 10px;
+}
+
+section{
+scroll-margin-top:20px;
+}
+
+.small{ color:#aaa; font-size:14px; }
 
 </style>
 </head>
 
 <body>
 
-<!-- TOP -->
-<div class="topbar">
+<header>
+PLATAFORMA UNIVERSITARIA DE FISIOLOGÍA CARDIOVASCULAR
+</header>
 
-<div class="title">Plataforma Cardiovascular Universitaria</div>
-
-<div class="menu">
-<button class="active" onclick="show('dash',this)">Dashboard</button>
-<button onclick="show('ecg',this)">ECG</button>
-<button onclick="show('anat',this)">Anatomía</button>
-<button onclick="show('quiz',this)">Quiz</button>
-</div>
-
+<div class="sidebar">
+<div class="nav" onclick="go('dashboard')">🏠 Dashboard</div>
+<div class="nav" onclick="go('anatomia')">🫀 Anatomía</div>
+<div class="nav" onclick="go('histologia')">🔬 Histología</div>
+<div class="nav" onclick="go('inervacion')">🧠 Inervación</div>
+<div class="nav" onclick="go('circulacion')">🩸 Circulación</div>
+<div class="nav" onclick="go('quiz')">📋 Cuestionario</div>
 </div>
 
 <main>
 
-<!-- DASHBOARD + HEMODINAMICA -->
-<section id="dash" class="section active">
+<!-- DASHBOARD -->
+<section id="dashboard" class="card">
 
-<div class="card">
-
-<h2>Hemodinámica</h2>
+<h2>Dashboard fisiológico</h2>
 
 <div class="grid">
-<div class="box">GC<br><b id="gc">4.9</b> L/min</div>
-<div class="box">PAM<br><b id="pam">93</b> mmHg</div>
-<div class="box">FC<br><b id="fcv">70</b></div>
-<div class="box">VS<br><b id="vsv">70</b></div>
+
+<div class="box">
+Gasto Cardíaco<br>
+<strong id="gc">4.9</strong> L/min
 </div>
 
-<p class="small">
-El gasto cardíaco (GC) depende de FC × VS y determina la perfusión tisular.
-La PAM refleja la presión media de perfusión.
-La RVP modula la resistencia del sistema vascular.
-</p>
+<div class="box">
+PAM<br>
+<strong id="pam">93</strong> mmHg
+</div>
+
+<div class="box">
+VO₂<br>
+<strong id="vo2">250</strong> ml/min
+</div>
+
+<div class="box">
+Estado<br>
+<strong id="estado">Reposo</strong>
+</div>
+
+</div>
+
+</section>
+
+<!-- HEMODINAMICA -->
+<section class="card">
+
+<h2>Control hemodinámico</h2>
 
 <label>Frecuencia Cardíaca</label>
 <input id="fc" type="range" min="40" max="200" value="70" oninput="update()">
@@ -169,51 +216,19 @@ La RVP modula la resistencia del sistema vascular.
 <label>Volumen Sistólico</label>
 <input id="vs" type="range" min="30" max="150" value="70" oninput="update()">
 
-<div class="small">🫀 El corazón responde dinámicamente a la carga hemodinámica</div>
+<label>Resistencia Vascular</label>
+<input id="rvp" type="range" min="10" max="40" value="20" oninput="update()">
 
-</div>
-
-</section>
-
-<!-- ECG -->
-<section id="ecg" class="section">
-
-<div class="card">
-
-<h2>Electrocardiograma</h2>
-
-<p class="small">
-El ECG registra actividad eléctrica cardíaca.
-P = despolarización auricular,
-QRS = despolarización ventricular,
-T = repolarización ventricular.
-</p>
-
-<canvas id="ecg"></canvas>
-
-</div>
+<button onclick="reset()">Reset</button>
 
 </section>
 
-<!-- ANATOMIA -->
-<section id="anat" class="section">
+<!-- CORAZON -->
+<section class="card">
 
-<div class="card">
+<h2>Corazón funcional</h2>
 
-<h2>Anatomía del corazón</h2>
-
-<p>
-El corazón posee aurículas y ventrículos, válvulas mitral, tricúspide, aórtica y pulmonar.
-Externamente presenta surcos coronarios y grandes vasos.
-</p>
-
-<p>
-Inervación autonómica:
-simpático ↑ FC y contractilidad,
-parasimpático ↓ FC.
-</p>
-
-<div style="margin-top:15px">
+<div style="display:flex;gap:20px;flex-wrap:wrap;align-items:center">
 
 <model-viewer
 id="heart"
@@ -222,32 +237,66 @@ auto-rotate
 camera-controls>
 </model-viewer>
 
-</div>
+<p class="small">Modelo adaptado a carga hemodinámica</p>
 
 </div>
 
 </section>
 
+<!-- ECG -->
+<section class="card">
+
+<h2>ECG fisiológico (P-QRS-T)</h2>
+<canvas id="ecg"></canvas>
+
+</section>
+
+<!-- ANATOMIA -->
+<section id="anatomia" class="card">
+<h2>Anatomía del corazón</h2>
+<p>
+El corazón es un órgano muscular compuesto por cuatro cavidades: aurícula derecha, aurícula izquierda,
+ventrículo derecho y ventrículo izquierdo. Su función principal es la propulsión de sangre a través del sistema circulatorio.
+</p>
+</section>
+
+<!-- HISTOLOGIA -->
+<section id="histologia" class="card">
+<h2>Histología cardíaca</h2>
+<p>
+El miocardio está formado por cardiomiocitos estriados con discos intercalares que permiten
+la sincronización eléctrica y mecánica del tejido.
+</p>
+</section>
+
+<!-- INERVACION -->
+<section id="inervacion" class="card">
+<h2>Inervación</h2>
+<p>
+El sistema nervioso autónomo regula la actividad cardíaca mediante fibras simpáticas (aumento de FC)
+y parasimpáticas (disminución de FC).
+</p>
+</section>
+
+<!-- CIRCULACION -->
+<section id="circulacion" class="card">
+<h2>Circulación coronaria</h2>
+<p>
+Las arterias coronarias derecha e izquierda irrigan el miocardio. Su perfusión ocurre principalmente en diástole.
+</p>
+</section>
+
 <!-- QUIZ -->
-<section id="quiz" class="section">
+<section id="quiz" class="card">
+<h2>Cuestionario (20 preguntas editables)</h2>
 
-<div class="card">
-
-<h2>Cuestionario</h2>
-
-<div class="quiz">
-<p>El nodo SA es el marcapasos del corazón</p>
-<label><input type="radio" name="q1"> Verdadero</label>
-<label><input type="radio" name="q1"> Falso</label>
-</div>
-
-<div class="quiz">
-<p>El QRS representa despolarización ventricular</p>
-<label><input type="radio" name="q2"> Verdadero</label>
-<label><input type="radio" name="q2"> Falso</label>
-</div>
-
-</div>
+<ol>
+<script>
+for(let i=1;i<=20;i++){
+document.write(`<li contenteditable="true">Pregunta ${i}: editar...</li>`);
+}
+</script>
+</ol>
 
 </section>
 
@@ -255,82 +304,93 @@ camera-controls>
 
 <script>
 
-/* NAV */
-function show(id,btn){
-document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
-document.querySelectorAll(".menu button").forEach(b=>b.classList.remove("active"));
-document.getElementById(id).classList.add("active");
-btn.classList.add("active");
-}
+let fc = document.getElementById("fc");
+let vs = document.getElementById("vs");
+let rvp = document.getElementById("rvp");
 
-/* VARIABLES */
-let fc=document.getElementById("fc");
-let vs=document.getElementById("vs");
-
-/* UPDATE */
 function update(){
 
-let f=+fc.value;
-let v=+vs.value;
+let f = +fc.value;
+let v = +vs.value;
+let r = +rvp.value;
 
-let gc=(f*v)/1000;
-let pam=(gc*20)+60;
+/* hemodinamica */
+let gc = (f*v)/1000;
+let pam = (gc*r)+60;
+let vo2 = gc*50;
 
-document.getElementById("gc").innerText=gc.toFixed(1);
-document.getElementById("pam").innerText=pam.toFixed(0);
+document.getElementById("gc").innerText = gc.toFixed(1);
+document.getElementById("pam").innerText = pam.toFixed(0);
+document.getElementById("vo2").innerText = vo2.toFixed(0);
 
-document.getElementById("fcv").innerText=f;
-document.getElementById("vsv").innerText=v;
+/* estado */
+document.getElementById("estado").innerText =
+f<80?"Reposo":f<140?"Ejercicio":"Alta demanda";
+
+/* corazón */
+document.getElementById("heart").style.transform =
+`scale(${1+v/400})`;
 
 }
 
 /* =========================
-   ECG VERDE REAL (QRS visible)
+   ECG REAL P-QRS-T
 ========================= */
 
-let canvas=document.getElementById("ecg");
-let ctx=canvas.getContext("2d");
+let canvas = document.getElementById("ecg");
+let ctx = canvas.getContext("2d");
 
-canvas.width=canvas.offsetWidth;
-canvas.height=canvas.offsetHeight;
+canvas.width = canvas.offsetWidth;
+canvas.height = canvas.offsetHeight;
 
-let t=0;
+let t = 0;
 
 function ecg(){
 
-ctx.fillStyle="#0a0b0e";
+ctx.fillStyle="black";
 ctx.fillRect(0,0,canvas.width,canvas.height);
 
-/* VERDE CLÍNICO VISUAL */
-ctx.strokeStyle="#00ff66";
+ctx.strokeStyle="red";
 ctx.lineWidth=2;
 ctx.beginPath();
 
-let hr=+fc.value;
-let speed=hr/60;
+let hr = +fc.value;
+let speed = hr/60;
 
 for(let x=0;x<canvas.width;x++){
 
-let phase=(x+t)*0.02*speed;
+let phase = (x+t)*0.02*speed;
 
-/* P-QRS-T REAL VISIBLE */
-let p=Math.exp(-Math.pow((phase%6)-1,2))*5;
-let qrs=Math.exp(-Math.pow((phase%6)-3,2))*55;
-let tW=Math.exp(-Math.pow((phase%6)-5,2))*12;
+/* onda P-QRS-T simplificada */
+let y =
+Math.sin(phase)*5 +
+Math.exp(-Math.pow((phase%6)-3,2))*40* // QRS spike
+(Math.sin(phase*0.5)*2);
 
-let y=p+qrs+tW;
+y = canvas.height/2 - y;
 
-ctx.lineTo(x,canvas.height/2-y);
+ctx.lineTo(x,y);
 }
 
 ctx.stroke();
 
-t+=2;
+t+=3;
 requestAnimationFrame(ecg);
+}
+
+function reset(){
+fc.value=70;
+vs.value=70;
+rvp.value=20;
+update();
 }
 
 update();
 ecg();
+
+function go(id){
+document.getElementById(id).scrollIntoView({behavior:"smooth"});
+}
 
 </script>
 
