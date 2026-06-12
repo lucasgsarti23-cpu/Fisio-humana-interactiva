@@ -8,6 +8,9 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 
+<script type="module"
+src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+
 <style>
 
 body{
@@ -21,6 +24,7 @@ color:#eaeaea;
 .topbar{
 position:fixed;
 top:0;
+left:0;
 width:100%;
 height:60px;
 background:#12141a;
@@ -32,10 +36,7 @@ padding:0 20px;
 z-index:1000;
 }
 
-.title{
-color:#fff;
-font-weight:600;
-}
+.title{ color:#ddd; font-weight:600; }
 
 .menu button{
 background:none;
@@ -66,6 +67,8 @@ border:1px solid #2a2d36;
 border-radius:12px;
 padding:18px;
 margin:15px 0;
+overflow:hidden;
+word-break:break-word;
 }
 
 /* GRID */
@@ -83,44 +86,22 @@ border-radius:10px;
 }
 
 /* TEXT */
-h2{ color:#ff3b3b; }
+h2{ color:#ff4b4b; }
 p{ color:#b8b8b8; line-height:1.5; }
-
 .small{ color:#9aa0a6; font-size:13px; }
 
 /* INPUT */
 input[type="range"]{
 width:100%;
-accent-color:#ff3b3b;
+accent-color:#ff4b4b;
 }
 
-/* HEART */
-.heart{
-font-size:50px;
-display:inline-block;
-animation:pulse 1s infinite;
-color:#ff3b3b;
-}
-
-@keyframes pulse{
-0%{transform:scale(1);}
-50%{transform:scale(1.15);}
-100%{transform:scale(1);}
-}
-
-/* ECG */
-canvas{
-width:100%;
-height:160px;
-background:#0a0b0e;
+/* MODEL */
+model-viewer{
+width:300px;
+height:260px;
 border-radius:10px;
 border:1px solid #2a2d36;
-}
-
-/* BUTTONS ECG */
-.ecgBtns button{
-margin:3px;
-font-size:12px;
 }
 
 /* QUIZ */
@@ -132,7 +113,14 @@ border-radius:10px;
 margin:10px 0;
 }
 
-label{ color:#ddd; }
+/* ECG */
+canvas{
+width:100%;
+height:170px;
+background:#0a0b0e;
+border-radius:10px;
+border:1px solid #2a2d36;
+}
 
 </style>
 </head>
@@ -142,7 +130,7 @@ label{ color:#ddd; }
 <!-- TOP -->
 <div class="topbar">
 
-<div class="title">Plataforma Cardiovascular</div>
+<div class="title">Plataforma Cardiovascular Universitaria</div>
 
 <div class="menu">
 <button class="active" onclick="show('dash',this)">Dashboard</button>
@@ -163,33 +151,25 @@ label{ color:#ddd; }
 <h2>Hemodinámica</h2>
 
 <div class="grid">
-
 <div class="box">GC<br><b id="gc">4.9</b> L/min</div>
 <div class="box">PAM<br><b id="pam">93</b> mmHg</div>
 <div class="box">FC<br><b id="fcv">70</b></div>
 <div class="box">VS<br><b id="vsv">70</b></div>
-
 </div>
 
-<br>
-
-<div>
-<p>
-🫀 <b>Frecuencia cardíaca:</b> latidos por minuto.<br>
-🫀 <b>Volumen sistólico:</b> sangre expulsada por latido.<br>
-🫀 <b>Gasto cardíaco:</b> FC × VS (perfusión total).<br>
-🫀 <b>PAM:</b> presión media que perfunde órganos.<br>
-🫀 <b>Resistencia vascular:</b> oposición al flujo sanguíneo.
+<p class="small">
+El gasto cardíaco (GC) depende de FC × VS y determina la perfusión tisular.
+La PAM refleja la presión media de perfusión.
+La RVP modula la resistencia del sistema vascular.
 </p>
-</div>
-
-<div class="heart" id="heart">❤️</div>
 
 <label>Frecuencia Cardíaca</label>
 <input id="fc" type="range" min="40" max="200" value="70" oninput="update()">
 
 <label>Volumen Sistólico</label>
 <input id="vs" type="range" min="30" max="150" value="70" oninput="update()">
+
+<div class="small">🫀 El corazón responde dinámicamente a la carga hemodinámica</div>
 
 </div>
 
@@ -204,16 +184,10 @@ label{ color:#ddd; }
 
 <p class="small">
 El ECG registra actividad eléctrica cardíaca.
-QRS representa despolarización ventricular.
-Alteraciones indican patología.
+P = despolarización auricular,
+QRS = despolarización ventricular,
+T = repolarización ventricular.
 </p>
-
-<div class="ecgBtns">
-<button onclick="mode('normal')">Normal</button>
-<button onclick="mode('htn')">Hipertensión</button>
-<button onclick="mode('soplo')">Soplo</button>
-<button onclick="mode('tachy')">Taquicardia</button>
-</div>
 
 <canvas id="ecg"></canvas>
 
@@ -229,8 +203,26 @@ Alteraciones indican patología.
 <h2>Anatomía del corazón</h2>
 
 <p>
-Aurículas, ventrículos, válvulas, circulación coronaria e inervación autonómica.
+El corazón posee aurículas y ventrículos, válvulas mitral, tricúspide, aórtica y pulmonar.
+Externamente presenta surcos coronarios y grandes vasos.
 </p>
+
+<p>
+Inervación autonómica:
+simpático ↑ FC y contractilidad,
+parasimpático ↓ FC.
+</p>
+
+<div style="margin-top:15px">
+
+<model-viewer
+id="heart"
+src="modelos/corazonhum.glb"
+auto-rotate
+camera-controls>
+</model-viewer>
+
+</div>
 
 </div>
 
@@ -241,7 +233,7 @@ Aurículas, ventrículos, válvulas, circulación coronaria e inervación auton�
 
 <div class="card">
 
-<h2>Quiz</h2>
+<h2>Cuestionario</h2>
 
 <div class="quiz">
 <p>El nodo SA es el marcapasos del corazón</p>
@@ -250,7 +242,7 @@ Aurículas, ventrículos, válvulas, circulación coronaria e inervación auton�
 </div>
 
 <div class="quiz">
-<p>El QRS es repolarización ventricular</p>
+<p>El QRS representa despolarización ventricular</p>
 <label><input type="radio" name="q2"> Verdadero</label>
 <label><input type="radio" name="q2"> Falso</label>
 </div>
@@ -265,10 +257,8 @@ Aurículas, ventrículos, válvulas, circulación coronaria e inervación auton�
 
 /* NAV */
 function show(id,btn){
-
 document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
 document.querySelectorAll(".menu button").forEach(b=>b.classList.remove("active"));
-
 document.getElementById(id).classList.add("active");
 btn.classList.add("active");
 }
@@ -292,14 +282,11 @@ document.getElementById("pam").innerText=pam.toFixed(0);
 document.getElementById("fcv").innerText=f;
 document.getElementById("vsv").innerText=v;
 
-/* heart speed */
-document.getElementById("heart").style.animationDuration=(60/f)+"s";
 }
 
-/* ECG MODELS */
-let modeType="normal";
-
-function mode(m){ modeType=m; }
+/* =========================
+   ECG VERDE REAL (QRS visible)
+========================= */
 
 let canvas=document.getElementById("ecg");
 let ctx=canvas.getContext("2d");
@@ -314,22 +301,22 @@ function ecg(){
 ctx.fillStyle="#0a0b0e";
 ctx.fillRect(0,0,canvas.width,canvas.height);
 
-ctx.strokeStyle="#ff3b3b";
+/* VERDE CLÍNICO VISUAL */
+ctx.strokeStyle="#00ff66";
+ctx.lineWidth=2;
 ctx.beginPath();
 
-let base=70;
-if(modeType==="htn") base=85;
-if(modeType==="tachy") base=110;
-if(modeType==="soplo") base=75;
+let hr=+fc.value;
+let speed=hr/60;
 
 for(let x=0;x<canvas.width;x++){
 
-let phase=(x+t)*0.02*(base/60);
+let phase=(x+t)*0.02*speed;
 
-/* QRS REAL visible */
-let p=Math.exp(-Math.pow((phase%6)-1,2))*4;
-let qrs=Math.exp(-Math.pow((phase%6)-3,2))*50;
-let tW=Math.exp(-Math.pow((phase%6)-5,2))*10;
+/* P-QRS-T REAL VISIBLE */
+let p=Math.exp(-Math.pow((phase%6)-1,2))*5;
+let qrs=Math.exp(-Math.pow((phase%6)-3,2))*55;
+let tW=Math.exp(-Math.pow((phase%6)-5,2))*12;
 
 let y=p+qrs+tW;
 
